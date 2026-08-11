@@ -1,0 +1,11 @@
+includes:
+	- /composer/vendor/phpstan/phpstan-strict-rules/rules.neon
+	- /composer/vendor/phpstan/phpstan-phpunit/extension.neon
+	- /composer/vendor/phpstan/phpstan-phpunit/rules.neon
+
+parameters:
+	level: max
+	paths:
+		- src
+		- tests
+	tmpDir: var/tmp/phpstan
