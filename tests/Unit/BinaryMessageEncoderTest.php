@@ -197,6 +197,19 @@ final class BinaryMessageEncoderTest extends TestCase
     }
 
     #[PHPUnit\Test]
+    #[PHPUnit\TestWith(['', false], 'empty buffer')]
+    #[PHPUnit\TestWith(["\x00\x00", false], 'ho headers')]
+    #[PHPUnit\TestWith(["\x00\x00\x00", true], 'empty payload')]
+    #[PHPUnit\TestWith(["\x00\x00\x01", false], 'payload is not complete')]
+    #[PHPUnit\TestWith(["\x00\x00\x01\x00", true], 'payload is complete')]
+    public function testHasDecodableMessage(string $buffer, bool $expectedResult): void
+    {
+        $result = $this->binaryMessageEncoder->hasDecodableMessage($buffer);
+
+        self::assertSame($expectedResult, $result);
+    }
+
+    #[PHPUnit\Test]
     public function testMaxPayloadSize(): void
     {
         $payload = random_bytes(65535);
