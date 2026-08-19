@@ -221,6 +221,17 @@ final class BinaryMessageEncoderTest extends TestCase
         $this->binaryMessageEncoder->decodeMessage($buffer);
     }
 
+    #[PHPUnit\Test]
+    public function testInvalidKind(): void
+    {
+        $buffer = "\xFA\x00\x00";
+
+        self::expectException(UnsupportedValueException::class);
+        self::expectExceptionMessageIs('Unsupported message kind 0xfa given.');
+
+        $this->binaryMessageEncoder->decodeMessage($buffer);
+    }
+
     /**
      * @return iterable<string, array{ Message, string }>
      */

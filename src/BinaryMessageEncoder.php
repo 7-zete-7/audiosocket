@@ -155,7 +155,7 @@ final class BinaryMessageEncoder implements MessageEncoder
         try {
             return Kind::from($buffer[0]);
         } catch (\ValueError $valueError) {
-            throw new UnsupportedValueException(\sprintf('Unsupported message kind 0x%s given.', bin2hex($buffer[0])), 0, $valueError);
+            throw new UnsupportedValueException(\sprintf('Unsupported message kind 0x%s given.', bin2hex($buffer[0])), previous: $valueError);
         }
     }
 
