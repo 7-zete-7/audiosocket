@@ -9,6 +9,42 @@ namespace Zete7\AudioSocket\Protocol;
  */
 enum AudioFormat: string
 {
+    private const array FORMAT_MAP = [
+        self::Slin->value => 'slin',
+        self::Slin12->value => 'slin12',
+        self::Slin16->value => 'slin16',
+        self::Slin24->value => 'slin24',
+        self::Slin32->value => 'slin32',
+        self::Slin44->value => 'slin44',
+        self::Slin48->value => 'slin48',
+        self::Slin96->value => 'slin96',
+        self::Slin192->value => 'slin192',
+    ];
+
+    private const array BITRATE_MAP = [
+        self::Slin->value => 8_000,
+        self::Slin12->value => 12_000,
+        self::Slin16->value => 16_000,
+        self::Slin24->value => 24_000,
+        self::Slin32->value => 32_000,
+        self::Slin44->value => 44_100,
+        self::Slin48->value => 48_000,
+        self::Slin96->value => 96_000,
+        self::Slin192->value => 192_000,
+    ];
+
+    private const array CHUNK_SIZE_MAP = [
+        self::Slin->value => 320,     //   8kHz * 20ms * 2 bytes
+        self::Slin12->value => 480,   //  12kHz * 20ms * 2 bytes
+        self::Slin16->value => 640,   //  16kHz * 20ms * 2 bytes
+        self::Slin24->value => 960,   //  24kHz * 20ms * 2 bytes
+        self::Slin32->value => 1280,  //  32kHz * 20ms * 2 bytes
+        self::Slin44->value => 1764,  //  44kHz * 20ms * 2 bytes
+        self::Slin48->value => 1920,  //  48kHz * 20ms * 2 bytes
+        self::Slin96->value => 3840,  //  96kHz * 20ms * 2 bytes
+        self::Slin192->value => 7680, // 192kHz * 20ms * 2 bytes
+    ];
+
     /**
      * Format: `slin`
      * Bitrate: 8kHz.
@@ -63,39 +99,28 @@ enum AudioFormat: string
      */
     case Slin192 = "\x18";
 
+    /**
+     * @return value-of<self::FORMAT_MAP>
+     */
     public function getFormat(): string
     {
-        return match ($this) {
-            self::Slin => 'slin',
-            self::Slin12 => 'slin12',
-            self::Slin16 => 'slin16',
-            self::Slin24 => 'slin24',
-            self::Slin32 => 'slin32',
-            self::Slin44 => 'slin44',
-            self::Slin48 => 'slin48',
-            self::Slin96 => 'slin96',
-            self::Slin192 => 'slin192',
-        };
+        return self::FORMAT_MAP[$this->value];
     }
 
+    /**
+     * @return 16
+     */
     public function getBitDepth(): int
     {
         return 16;
     }
 
+    /**
+     * @return value-of<self::BITRATE_MAP>
+     */
     public function getBitRate(): int
     {
-        return match ($this) {
-            self::Slin => 8_000,
-            self::Slin12 => 12_000,
-            self::Slin16 => 16_000,
-            self::Slin24 => 24_000,
-            self::Slin32 => 32_000,
-            self::Slin44 => 44_100,
-            self::Slin48 => 48_000,
-            self::Slin96 => 96_000,
-            self::Slin192 => 192_000,
-        };
+        return self::BITRATE_MAP[$this->value];
     }
 
     public function isSigned(): bool
@@ -108,18 +133,11 @@ enum AudioFormat: string
         return !$this->isSigned();
     }
 
+    /**
+     * @return value-of<self::CHUNK_SIZE_MAP>
+     */
     public function getChunkSize(): int
     {
-        return match ($this) {
-            self::Slin => 320,     //   8kHz * 20ms * 2 bytes
-            self::Slin12 => 480,   //  12kHz * 20ms * 2 bytes
-            self::Slin16 => 640,   //  16kHz * 20ms * 2 bytes
-            self::Slin24 => 960,   //  24kHz * 20ms * 2 bytes
-            self::Slin32 => 1280,  //  32kHz * 20ms * 2 bytes
-            self::Slin44 => 1764,  //  44kHz * 20ms * 2 bytes
-            self::Slin48 => 1920,  //  48kHz * 20ms * 2 bytes
-            self::Slin96 => 3840,  //  96kHz * 20ms * 2 bytes
-            self::Slin192 => 7680, // 192kHz * 20ms * 2 bytes
-        };
+        return self::CHUNK_SIZE_MAP[$this->value];
     }
 }
