@@ -166,13 +166,8 @@ final class BinaryMessageEncoder implements MessageEncoder
     {
         \assert($this->hasHeaders($buffer));
 
-        if (false === $unpacked = unpack('n', $buffer, self::PAYLOAD_LENGTH_OFFSET)) {
-            throw new \LogicException('Buffer is not contains header.');
-        }
-
-        if (null === $value = $unpacked[1] ?? null) {
-            throw new \LogicException('Buffer is not contains header.');
-        }
+        // @phpstan-ignore offsetAccess.nonOffsetAccessible(it is impossible to gain false from unpack() for buffer which has header)
+        $value = unpack('n', $buffer, self::PAYLOAD_LENGTH_OFFSET)[1];
 
         \assert(\is_int($value));
         \assert(0 <= $value);
