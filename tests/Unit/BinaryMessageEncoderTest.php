@@ -13,6 +13,7 @@ use Zete7\AudioSocket\Protocol\AudioMessage;
 use Zete7\AudioSocket\Protocol\DtmfMessage;
 use Zete7\AudioSocket\Protocol\DtmfSignal;
 use Zete7\AudioSocket\Protocol\ErrorMessage;
+use Zete7\AudioSocket\Protocol\Exception\UnsupportedValueException;
 use Zete7\AudioSocket\Protocol\HangupMessage;
 use Zete7\AudioSocket\Protocol\Message;
 use Zete7\AudioSocket\Protocol\UuidMessage;
@@ -207,6 +208,17 @@ final class BinaryMessageEncoderTest extends TestCase
         self::assertSame(AudioFormat::Slin, $decodedMessage->audioFormat);
         self::assertSame($payload, $decodedMessage->payload);
         self::assertSame('', $bytes);
+    }
+
+    #[PHPUnit\Test]
+    public function testInvalidDtmf(): void
+    {
+        $buffer = "\x03\x00\x01\xFA";
+
+        self::expectException(UnsupportedValueException::class);
+        self::expectExceptionMessageIs('Unsupported DTMF signal 0xfa given.');
+
+        $this->binaryMessageEncoder->decodeMessage($buffer);
     }
 
     /**
