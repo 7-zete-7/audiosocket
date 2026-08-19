@@ -189,7 +189,7 @@ final class BinaryMessageEncoder implements MessageEncoder
         try {
             return DtmfSignal::from($payload);
         } catch (\ValueError $valueError) {
-            throw throw new UnsupportedValueException(\sprintf('Unsupported DTMF signal 0x%s given.', bin2hex($payload)), 0, $valueError);
+            throw new UnsupportedValueException(\sprintf('Unsupported DTMF signal 0x%s given.', bin2hex($payload)), previous: $valueError);
         }
     }
 }
