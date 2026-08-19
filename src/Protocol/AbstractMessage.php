@@ -22,7 +22,7 @@ abstract readonly class AbstractMessage implements Message
         public string $payload,
     ) {
         if (isset($payload[65535])) {
-            throw new OverflowException('Payload size must be less than 65535.');
+            throw new OverflowException('Payload size must not be greater than than 65535.');
         }
     }
 }

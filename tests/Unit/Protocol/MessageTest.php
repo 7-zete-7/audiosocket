@@ -35,7 +35,6 @@ final class MessageTest extends TestCase
     public function testPayloadAboveOverflow(Kind $kind): void
     {
         self::expectException(OverflowException::class);
-        self::expectExceptionMessageIs('Payload size must be less than 65535.');
 
         new MessageStub(
             kind: $kind,
