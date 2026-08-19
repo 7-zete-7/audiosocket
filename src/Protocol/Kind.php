@@ -103,11 +103,7 @@ enum Kind: string
      */
     public static function fromAudioFormat(AudioFormat $audioFormat): Kind
     {
-        try {
-            return Kind::from($audioFormat->value);
-        } catch (\ValueError $valueError) {
-            throw new \LogicException('Failed to cast AudioFormat to Kind: '.$valueError->getMessage(), 0, $valueError);
-        }
+        return Kind::from($audioFormat->value);
     }
 
     /**
@@ -120,7 +116,7 @@ enum Kind: string
         try {
             return AudioFormat::from($this->value);
         } catch (\ValueError $valueError) {
-            throw new NotAudioMessageException('Message kind is not an audio.', 0, $valueError);
+            throw new NotAudioMessageException('Message kind is not an audio.', previous: $valueError);
         }
     }
 }
